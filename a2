@@ -1,0 +1,52 @@
+import random
+
+def randomsolution(tsp):
+  cities=list(range(len(tsp)))
+  solution=[]
+  for i in range(len(tsp)):
+    randomcity=cities[random.randint(0,len(cities)-1)]
+    solution.append(randomcity)
+    cities.remove(randomcity) 
+  return solution
+def routeLength(tsp,solution):
+  routelength=0
+  for i in range(len(solution)):
+    routelength+=tsp[solution[i-1]][solution[i]]
+  return routelength
+def getneighbour(solution):
+  neighbours=[]
+  for i in range(len(solution)):
+    for j in range(i+1,len(solution)):
+      neighbour=solution.copy()
+      neighbour[i]=solution[j]
+      neighbour[j]=solution[i]
+      neighbours.append(neighbour)
+  return neighbours
+def getbestneighbour(tsp,neighbours):
+  bestneighbour=neighbours[0]
+  bestroutelength=routeLength(tsp,neighbours[0])
+  for neighbour in neighbours:
+    current=routeLength(tsp,neighbour)
+    if current<bestroutelength:
+      bestneighbour=neighbour
+      bestroutelength=current
+  return bestneighbour,bestroutelength
+
+def hillclimbing(tsp):
+  currentsolution=randomsolution(tsp)
+  print(currentsolution)
+  currentroutelength=routeLength(tsp,currentsolution)
+  print(currentroutelength)
+  neighbours=getneighbour(currentsolution)
+  print(neighbours)
+  print("--------------")
+  print(getbestneighbour(tsp,neighbours))
+
+
+tsp=[[0,10,15,20],
+[10,0,35,25],
+[15,35,0,30],
+[20,25,30,0]]
+
+hillclimbing(tsp)
+
